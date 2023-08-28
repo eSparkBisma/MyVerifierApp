@@ -33,8 +33,6 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
-
 const styles = StyleSheet.create({
   ButtonStyle: {
     borderRadius: 25,
@@ -42,3 +40,5 @@ const styles = StyleSheet.create({
     padding: 14,
   },
 });
+
+export default Button;

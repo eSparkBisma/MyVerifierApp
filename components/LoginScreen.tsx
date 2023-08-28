@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import AppImage from './AppImage';
 import Heading from './Heading';
@@ -9,6 +9,15 @@ import InputBox from './InputBox';
 import IconButton from './IconButton';
 
 const LoginScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // cons handleLogin = async () =>{
+  //   try{
+  //     // const response await axios.post('')
+  //   }
+  // }
+
   return (
     <View style={styles.maincontainer}>
       <View style={styles.topcontainer}>
@@ -26,9 +35,9 @@ const LoginScreen = () => {
           textStyle={{width: '95%', paddingHorizontal: 14, paddingBottom: 8}}
         />
         <SubHeading sub_heading="Email" />
-        <InputBox placeholder="Enter your email" />
+        <InputBox placeholder="Enter your email" keyboardType="email-address" />
         <SubHeading sub_heading="Password" />
-        <InputBox placeholder="Enter password" />
+        <InputBox placeholder="Enter password" isPassword={true} />
         <PlainText
           ptext="Forgot Password?"
           textStyle={{

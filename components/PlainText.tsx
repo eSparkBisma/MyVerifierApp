@@ -10,8 +10,6 @@ const PlainText: React.FC<PlainTextProps> = ({ptext, textStyle}) => {
   return <Text style={[styles.plainStyle, textStyle]}>{ptext}</Text>;
 };
 
-export default PlainText;
-
 const styles = StyleSheet.create({
   plainStyle: {
     color: 'grey',
@@ -22,3 +20,5 @@ const styles = StyleSheet.create({
     // paddingBottom: 20,
   },
 });
+
+export default PlainText;
