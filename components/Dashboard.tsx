@@ -3,9 +3,14 @@ import {ImageBackground, View, StyleSheet, Text} from 'react-native';
 import AppImage from './AppImage';
 import SubHeading from './SubHeading';
 import Button from './Button';
+import {useSession} from './SessionContext';
 
-const Dashboard: React.FC = () => {
-  const [loggedIn, setLoggedIn] = useState(true); // Assume user is logged in initially
+interface DashboardProps {
+  onSignout?: () => void;
+}
+const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
+  const {isLoggedIn, setLoggedIn} = useSession();
+  // const [loggedIn, setLoggedIn] = useState(true); // Assume user is logged in initially
 
   const handleSignOut = () => {
     setLoggedIn(false); // Update login status to false
@@ -17,7 +22,7 @@ const Dashboard: React.FC = () => {
       <View style={styles.overlay} />
       <Text style={styles.profile}>Profile</Text>
       <View style={styles.maincontainer}>
-        {loggedIn ? (
+        {isLoggedIn ? (
           <>
             <View style={styles.profiledetails}>
               <AppImage
@@ -47,9 +52,12 @@ const Dashboard: React.FC = () => {
             </View>
           </>
         ) : (
-          <Text style={{color: 'black'}}>
-            Please sign in to view dashboard.
-          </Text>
+          <Button
+            buttontitle="please Login to continue"
+            onPress={onSignout}
+            buttonStyle={{backgroundColor: '#1877F2', marginTop: '96%'}}
+            textStyle={{color: '#fff'}}
+          />
         )}
       </View>
     </ImageBackground>

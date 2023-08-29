@@ -7,6 +7,8 @@ import SubHeading from './SubHeading';
 import Button from './Button';
 import InputBox from './InputBox';
 import IconButton from './IconButton';
+import {useSession} from './SessionContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginScreenProps {
   onSuccessfulLogin?: () => void;
@@ -15,7 +17,17 @@ interface LoginScreenProps {
 const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
   const [emailaddress, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {isLoggedIn, setLoggedIn} = useSession();
   // const [loginState, setLoginState] = useState(false);
+
+  async function loadUserData(userData: object) {
+    const data = JSON.stringify(userData);
+    try {
+      await AsyncStorage.setItem('@session', data);
+    } catch (error) {
+      console.error('Error loading session:', error);
+    }
+  }
 
   const handleLogin = async () => {
     try {
@@ -32,9 +44,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
       if (user) {
         console.log(user);
         console.log('Login successful!');
+        setLoggedIn(true);
         if (onSuccessfulLogin) {
+          loadUserData(user);
           onSuccessfulLogin(); // Call the prop function when login is successful
-          console.log('5555555555555555555');
         }
       } else {
         console.log('Login failed');
