@@ -8,15 +8,41 @@ import Button from './Button';
 import InputBox from './InputBox';
 import IconButton from './IconButton';
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+interface LoginScreenProps {
+  onSuccessfulLogin?: () => void;
+}
 
-  // cons handleLogin = async () =>{
-  //   try{
-  //     // const response await axios.post('')
-  //   }
-  // }
+const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
+  const [emailaddress, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [loginState, setLoginState] = useState(false);
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(
+        'https://64e719afb0fd9648b78f596f.mockapi.io/users',
+      );
+      const responseData = await response.json();
+
+      const user = responseData.find(
+        (u: {emailaddress: string; password: string}) =>
+          u.emailaddress === emailaddress && u.password === password,
+      );
+
+      if (user) {
+        console.log(user);
+        console.log('Login successful!');
+        if (onSuccessfulLogin) {
+          onSuccessfulLogin(); // Call the prop function when login is successful
+          console.log('5555555555555555555');
+        }
+      } else {
+        console.log('Login failed');
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error);
+    }
+  };
 
   return (
     <View style={styles.maincontainer}>
@@ -35,9 +61,21 @@ const LoginScreen = () => {
           textStyle={{width: '95%', paddingHorizontal: 14, paddingBottom: 8}}
         />
         <SubHeading sub_heading="Email" />
-        <InputBox placeholder="Enter your email" keyboardType="email-address" />
+        <InputBox
+          placeholder="Enter your email"
+          keyboardType="email-address"
+          onChangeText={value => {
+            setEmail(value);
+          }}
+        />
         <SubHeading sub_heading="Password" />
-        <InputBox placeholder="Enter password" isPassword={true} />
+        <InputBox
+          placeholder="Enter password"
+          isPassword={true}
+          onChangeText={value => {
+            setPassword(value);
+          }}
+        />
         <PlainText
           ptext="Forgot Password?"
           textStyle={{
@@ -53,6 +91,7 @@ const LoginScreen = () => {
           buttontitle="Login"
           buttonStyle={{backgroundColor: '#1877F2'}}
           textStyle={{color: '#fff'}}
+          onPress={handleLogin}
         />
         <PlainText
           ptext="Or login with"

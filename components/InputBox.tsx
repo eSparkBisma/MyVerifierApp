@@ -11,14 +11,14 @@ interface InputBoxProps {
   placeholder: string;
   isPassword?: boolean;
   keyboardType?: 'default' | 'email-address';
-  errorMessage?: string;
+  onChangeText?: (text: string) => void;
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
   placeholder,
   keyboardType = 'default',
   isPassword,
-  errorMessage,
+  onChangeText,
 }) => {
   const [text, setText] = useState('');
   const [errorText, setErrorText] = useState('');
@@ -48,6 +48,9 @@ const InputBox: React.FC<InputBoxProps> = ({
       const validationError = validateEmail(newText);
       setErrorText(validationError);
     }
+    if (onChangeText) {
+      onChangeText(newText);
+    }
   };
 
   const handlePasswordVisibility = () => {
@@ -60,14 +63,7 @@ const InputBox: React.FC<InputBoxProps> = ({
         placeholder={placeholder}
         placeholderTextColor="#888888"
         secureTextEntry={isPassword && !isPasswordVisible}
-        style={[
-          styles.input,
-          errorText
-            ? styles.invalidInput
-            : keyboardType == 'email-address'
-            ? {borderColor: 'green', borderWidth: 1}
-            : null,
-        ]}
+        style={[styles.input, errorText ? styles.invalidInput : null]}
         onChangeText={handleTextChange}
         value={text}
         keyboardType={keyboardType}

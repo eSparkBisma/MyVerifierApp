@@ -1,42 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ImageBackground, View, StyleSheet, Text} from 'react-native';
 import AppImage from './AppImage';
 import SubHeading from './SubHeading';
 import Button from './Button';
 
 const Dashboard: React.FC = () => {
+  const [loggedIn, setLoggedIn] = useState(true); // Assume user is logged in initially
+
+  const handleSignOut = () => {
+    setLoggedIn(false); // Update login status to false
+  };
   return (
     <ImageBackground
-      source={require('./images/bg-img.jpg')}
+      source={require('../images/bg-img.jpg')}
       style={styles.backgroundimage}>
       <View style={styles.overlay} />
       <Text style={styles.profile}>Profile</Text>
       <View style={styles.maincontainer}>
-        <View style={styles.profiledetails}>
-          <AppImage
-            source={require('./images/dp.jpg')}
-            width={115}
-            height={115}
-            style={styles.dp}
-          />
-          <Text style={styles.name}>John Corner</Text>
-          <Text style={styles.phone}>335 664 5989</Text>
-        </View>
-        <View style={styles.dashboard}>
-          <SubHeading
-            sub_heading="Settings"
-            textStyle={{color: '#192A56', fontSize: 18}}
-          />
-          <Button
-            buttontitle="Sign Out"
-            style={styles.buttonstyle}
-            textStyle={{
-              textAlign: 'left',
-              color: 'rgba(25, 42, 86, 0.6)',
-              fontSize: 18,
-              fontWeight: '500',
-            }}></Button>
-        </View>
+        {loggedIn ? (
+          <>
+            <View style={styles.profiledetails}>
+              <AppImage
+                source={require('../images/dp.jpg')}
+                width={115}
+                height={115}
+                style={styles.dp}
+              />
+              <Text style={styles.name}>John Corner</Text>
+              <Text style={styles.phone}>335 664 5989</Text>
+            </View>
+            <View style={styles.dashboard}>
+              <SubHeading
+                sub_heading="Settings"
+                textStyle={{color: '#192A56', fontSize: 18}}
+              />
+              <Button
+                buttontitle="Sign Out"
+                style={styles.buttonstyle}
+                textStyle={{
+                  textAlign: 'left',
+                  color: 'rgba(25, 42, 86, 0.6)',
+                  fontSize: 18,
+                  fontWeight: '500',
+                }}
+                onPress={handleSignOut}></Button>
+            </View>
+          </>
+        ) : (
+          <Text style={{color: 'black'}}>
+            Please sign in to view dashboard.
+          </Text>
+        )}
       </View>
     </ImageBackground>
   );
