@@ -1,30 +1,52 @@
 import React, {useState} from 'react';
-import {TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Image,
+} from 'react-native';
 
 interface InputBoxProps {
   placeholder: string;
   isPassword?: boolean;
   keyboardType?: 'default' | 'email-address';
+  errorMessage?: string;
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
   placeholder,
   keyboardType = 'default',
   isPassword,
+  errorMessage,
 }) => {
   const [text, setText] = useState('');
-  const [isValid, setIsValid] = useState(true);
+  const [errorText, setErrorText] = useState('');
   const [isPasswordVisible, SetIsPasswordVisible] = useState(false);
 
-  const validateEmail = (email: string): boolean => {
+  const validateEmail = (email: string): string => {
     const emailPattern = /\S+@\S+\.\S+/;
-    return emailPattern.test(email);
+
+    if (!emailPattern.test(email)) {
+      if (!email) {
+        return '';
+      } else if (!email.includes('@')) {
+        return 'Email address must contain "@" symbol.';
+      } else if (!email.includes('.')) {
+        return 'Email address must contain "." symbol.';
+      } else {
+        return 'Please enter a valid email address.';
+      }
+    }
+
+    return '';
   };
 
   const handleTextChange = (newText: string) => {
     setText(newText);
     if (keyboardType === 'email-address') {
-      setIsValid(validateEmail(newText));
+      const validationError = validateEmail(newText);
+      setErrorText(validationError);
     }
   };
 
@@ -38,7 +60,14 @@ const InputBox: React.FC<InputBoxProps> = ({
         placeholder={placeholder}
         placeholderTextColor="#888888"
         secureTextEntry={isPassword && !isPasswordVisible}
-        style={[styles.input, !isValid && styles.invalidInput]}
+        style={[
+          styles.input,
+          errorText
+            ? styles.invalidInput
+            : keyboardType == 'email-address'
+            ? {borderColor: 'green', borderWidth: 1}
+            : null,
+        ]}
         onChangeText={handleTextChange}
         value={text}
         keyboardType={keyboardType}
@@ -57,6 +86,7 @@ const InputBox: React.FC<InputBoxProps> = ({
           />
         </TouchableOpacity>
       )}
+      {errorText ? <Text style={styles.errorText}>{errorText}</Text> : null}
     </>
   );
 };
@@ -82,6 +112,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+  errorText: {color: 'red', fontSize: 12, marginTop: 4},
 });
 
 export default InputBox;
