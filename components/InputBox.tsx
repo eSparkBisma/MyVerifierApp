@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  View,
 } from 'react-native';
 
 interface InputBoxProps {
@@ -58,16 +59,20 @@ const InputBox: React.FC<InputBoxProps> = ({
   };
 
   return (
-    <>
-      <TextInput
-        placeholder={placeholder}
-        placeholderTextColor="#888888"
-        secureTextEntry={isPassword && !isPasswordVisible}
-        style={[styles.input, errorText ? styles.invalidInput : null]}
-        onChangeText={handleTextChange}
-        value={text}
-        keyboardType={keyboardType}
-      />
+    <View style={styles.container}>
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <TextInput
+          placeholder={placeholder}
+          placeholderTextColor="#888888"
+          secureTextEntry={isPassword && !isPasswordVisible}
+          style={[styles.input, errorText ? styles.invalidInput : null]}
+          onChangeText={handleTextChange}
+          value={text}
+          keyboardType={keyboardType}
+        />
+        {errorText ? <Text style={styles.errorText}>{errorText}</Text> : null}
+      </View>
+
       {isPassword && (
         <TouchableOpacity
           onPress={handlePasswordVisibility}
@@ -75,19 +80,22 @@ const InputBox: React.FC<InputBoxProps> = ({
           <Image
             source={
               isPasswordVisible
-                ? require('../images/hide.png')
-                : require('../images/visible.png')
+                ? require('../images/visible.png')
+                : require('../images/hide.png')
             }
             style={styles.eyeIcon}
           />
         </TouchableOpacity>
       )}
-      {errorText ? <Text style={styles.errorText}>{errorText}</Text> : null}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   input: {
     borderRadius: 25,
     backgroundColor: '#f0f0f0',

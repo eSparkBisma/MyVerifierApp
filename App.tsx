@@ -3,12 +3,14 @@ import FirstTimeScreen from './components/FirstTimeScreen';
 import LoginScreen from './components/LoginScreen';
 import Dashboard from './components/Dashboard';
 import {SessionProvider} from './components/SessionContext'; // Import the SessionProvider
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App: React.FC = () => {
+  const [showFirstTimeScreen, setShowFirstTimeScreen] = useState(true);
   const [showLoginScreen, setShowLoginScreen] = useState(false);
   const [showDashboard, setshowDashboard] = useState(false);
+  const [checkComplete, setCheckComplete] = useState(false);
 
   const handleLoginPress = () => {
     setShowLoginScreen(true);
@@ -20,36 +22,90 @@ const App: React.FC = () => {
     setshowDashboard(false);
   };
 
-  async function loadSession() {
+  async function setAppOpenedFlag() {
     try {
-      const value = await AsyncStorage.getItem('@session');
-      console.log('_____', value);
-
-      if (value !== null) {
-        setshowDashboard(true);
-        // setshowDashboard(JSON.parse(value));
-      }
+      await AsyncStorage.setItem('@appOpened', 'true');
+      setShowFirstTimeScreen(false);
     } catch (error) {
-      console.error('Error loading session:', error);
+      console.error('Error setting app opened flag:', error);
     }
   }
+
   useEffect(() => {
+    async function checkFirstTime() {
+      try {
+        const value = await AsyncStorage.getItem('@appOpened');
+        console.log('Checking first time:', value);
+        if (value) {
+          setShowFirstTimeScreen(false);
+          setShowLoginScreen(true);
+        } else {
+          setAppOpenedFlag().then(() => {
+            setShowFirstTimeScreen(false);
+            setCheckComplete(true);
+          });
+        }
+      } catch (error) {
+        console.error('Error checking first time:', error);
+      }
+    }
+    checkFirstTime();
+  }, []);
+
+  useEffect(() => {
+    async function loadSession() {
+      try {
+        const value = await AsyncStorage.getItem('@session');
+        if (value !== null) {
+          setshowDashboard(true);
+        }
+        setCheckComplete(true);
+      } catch (error) {
+        console.error('Error loading session:', error);
+      }
+    }
+
     loadSession();
   }, []);
+
+  if (!checkComplete) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <SessionProvider>
       {showLoginScreen ? (
         showDashboard ? (
-          <Dashboard onSignout={handleSignOut} />
+          <>
+            {console.log('Rendering Dashboard')}
+            <Dashboard onSignout={handleSignOut} />
+          </>
         ) : (
-          <LoginScreen onSuccessfulLogin={handleSuccessfulLogin} />
+          <>
+            {console.log('Rendering LoginScreen')}
+            <LoginScreen onSuccessfulLogin={handleSuccessfulLogin} />
+          </>
         )
       ) : (
-        <FirstTimeScreen onLoginPress={handleLoginPress} />
+        <>
+          {console.log('Rendering FirstTimeScreen')}
+          <FirstTimeScreen onLoginPress={handleLoginPress} />
+        </>
       )}
     </SessionProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default App;

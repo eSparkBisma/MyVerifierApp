@@ -4,6 +4,7 @@ import Button from './Button';
 import PlainText from './PlainText';
 import Heading from './Heading';
 import AppImage from './AppImage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface FirstTimeScreenProps {
   onLoginPress?: () => void;

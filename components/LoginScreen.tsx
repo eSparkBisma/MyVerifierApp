@@ -18,6 +18,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
   const [emailaddress, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {isLoggedIn, setLoggedIn} = useSession();
+  const [loginError, setLoginError] = useState(false);
   // const [loginState, setLoginState] = useState(false);
 
   async function loadUserData(userData: object) {
@@ -51,6 +52,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
         }
       } else {
         console.log('Login failed');
+        setLoginError(true);
       }
     } catch (error) {
       console.error('An error occurred during login:', error);
@@ -106,12 +108,25 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
           textStyle={{color: '#fff'}}
           onPress={handleLogin}
         />
+
+        {loginError && (
+          <PlainText
+            ptext="Incorrect credentials. Please try again."
+            textStyle={{
+              color: 'red',
+              textAlign: 'center',
+              paddingTop: 10,
+            }}
+          />
+        )}
+
         <PlainText
           ptext="Or login with"
           textStyle={{
             fontWeight: 'bold',
             textAlign: 'center',
-            paddingVertical: 20,
+            paddingTop: 10,
+            paddingBottom: 20,
           }}
         />
         <View

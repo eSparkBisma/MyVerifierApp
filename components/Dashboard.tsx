@@ -1,20 +1,44 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ImageBackground, View, StyleSheet, Text} from 'react-native';
 import AppImage from './AppImage';
 import SubHeading from './SubHeading';
 import Button from './Button';
 import {useSession} from './SessionContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface DashboardProps {
   onSignout?: () => void;
 }
 const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
   const {isLoggedIn, setLoggedIn} = useSession();
+  // const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<{
+    avatar: string;
+    name: string;
+    id: string;
+  } | null>(null);
   // const [loggedIn, setLoggedIn] = useState(true); // Assume user is logged in initially
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    await AsyncStorage.removeItem('@session');
     setLoggedIn(false); // Update login status to false
   };
+
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const data = await AsyncStorage.getItem('@session');
+        if (data) {
+          setUserData(JSON.parse(data));
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+
+    fetchUserData();
+  }, []);
+
   return (
     <ImageBackground
       source={require('../images/bg-img.jpg')}
@@ -25,14 +49,16 @@ const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
         {isLoggedIn ? (
           <>
             <View style={styles.profiledetails}>
-              <AppImage
-                source={require('../images/dp.jpg')}
-                width={115}
-                height={115}
-                style={styles.dp}
-              />
-              <Text style={styles.name}>John Corner</Text>
-              <Text style={styles.phone}>335 664 5989</Text>
+              {userData?.avatar && (
+                <AppImage
+                  source={{uri: userData.avatar}}
+                  width={115}
+                  height={115}
+                  style={styles.dp}
+                />
+              )}
+              <Text style={styles.name}>{userData?.name}</Text>
+              <Text style={styles.phone}>{userData?.id}</Text>
             </View>
             <View style={styles.dashboard}>
               <SubHeading
