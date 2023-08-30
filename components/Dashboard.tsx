@@ -3,26 +3,18 @@ import {ImageBackground, View, StyleSheet, Text} from 'react-native';
 import AppImage from './AppImage';
 import SubHeading from './SubHeading';
 import Button from './Button';
-import {useSession} from './SessionContext';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface DashboardProps {
   onSignout?: () => void;
 }
 const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
-  const {isLoggedIn, setLoggedIn} = useSession();
-  // const [userData, setUserData] = useState(null);
   const [userData, setUserData] = useState<{
     avatar: string;
     name: string;
     id: string;
   } | null>(null);
-  // const [loggedIn, setLoggedIn] = useState(true); // Assume user is logged in initially
-
-  const handleSignOut = async () => {
-    await AsyncStorage.removeItem('@session');
-    setLoggedIn(false); // Update login status to false
-  };
 
   useEffect(() => {
     async function fetchUserData() {
@@ -46,45 +38,45 @@ const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
       <View style={styles.overlay} />
       <Text style={styles.profile}>Profile</Text>
       <View style={styles.maincontainer}>
-        {isLoggedIn ? (
-          <>
-            <View style={styles.profiledetails}>
-              {userData?.avatar && (
-                <AppImage
-                  source={{uri: userData.avatar}}
-                  width={115}
-                  height={115}
-                  style={styles.dp}
-                />
-              )}
-              <Text style={styles.name}>{userData?.name}</Text>
-              <Text style={styles.phone}>{userData?.id}</Text>
-            </View>
-            <View style={styles.dashboard}>
-              <SubHeading
-                sub_heading="Settings"
-                textStyle={{color: '#192A56', fontSize: 18}}
-              />
-              <Button
-                buttontitle="Sign Out"
-                style={styles.buttonstyle}
-                textStyle={{
-                  textAlign: 'left',
-                  color: 'rgba(25, 42, 86, 0.6)',
-                  fontSize: 18,
-                  fontWeight: '500',
-                }}
-                onPress={handleSignOut}></Button>
-            </View>
-          </>
-        ) : (
-          <Button
-            buttontitle="please Login to continue"
-            onPress={onSignout}
-            buttonStyle={{backgroundColor: '#1877F2', marginTop: '96%'}}
-            textStyle={{color: '#fff'}}
+        {/* {isLoggedIn ? (
+          <> */}
+        <View style={styles.profiledetails}>
+          {userData?.avatar && (
+            <AppImage
+              source={{uri: userData.avatar}}
+              width={115}
+              height={115}
+              style={styles.dp}
+            />
+          )}
+          <Text style={styles.name}>{userData?.name}</Text>
+          <Text style={styles.phone}>{userData?.id}</Text>
+        </View>
+        <View style={styles.dashboard}>
+          <SubHeading
+            sub_heading="Settings"
+            textStyle={{color: '#192A56', fontSize: 18}}
           />
-        )}
+          <Button
+            buttontitle="Sign Out"
+            style={styles.buttonstyle}
+            textStyle={{
+              textAlign: 'left',
+              color: 'rgba(25, 42, 86, 0.6)',
+              fontSize: 18,
+              fontWeight: '500',
+            }}
+            onPress={onSignout}></Button>
+        </View>
+        {/* </> */}
+        {/* // ) : ( */}
+        {/* //   <Button */}
+        {/* //     buttontitle="please Login to continue"
+        //     onPress={onSignout}
+        //     buttonStyle={{backgroundColor: '#1877F2', marginTop: '96%'}}
+        //     textStyle={{color: '#fff'}}
+        //   />
+        // )} */}
       </View>
     </ImageBackground>
   );

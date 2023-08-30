@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import FirstTimeScreen from './components/FirstTimeScreen';
 import LoginScreen from './components/LoginScreen';
 import Dashboard from './components/Dashboard';
-import {SessionProvider} from './components/SessionContext'; // Import the SessionProvider
 import {StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,7 +17,8 @@ const App: React.FC = () => {
   const handleSuccessfulLogin = () => {
     setshowDashboard(true);
   };
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    await AsyncStorage.removeItem('@session');
     setshowDashboard(false);
   };
 
@@ -77,7 +77,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <SessionProvider>
+    <>
       {showLoginScreen ? (
         showDashboard ? (
           <>
@@ -96,7 +96,7 @@ const App: React.FC = () => {
           <FirstTimeScreen onLoginPress={handleLoginPress} />
         </>
       )}
-    </SessionProvider>
+    </>
   );
 };
 

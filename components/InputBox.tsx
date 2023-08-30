@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import {
   TextInput,
@@ -25,7 +26,7 @@ const InputBox: React.FC<InputBoxProps> = ({
   const [errorText, setErrorText] = useState('');
   const [isPasswordVisible, SetIsPasswordVisible] = useState(false);
 
-  const validateEmail = (email: string): string => {
+  const validateEmailAsync = async (email: string): Promise<string> => {
     const emailPattern = /\S+@\S+\.\S+/;
 
     if (!emailPattern.test(email)) {
@@ -43,12 +44,15 @@ const InputBox: React.FC<InputBoxProps> = ({
     return '';
   };
 
-  const handleTextChange = (newText: string) => {
-    setText(newText);
+  const handleBlur = async () => {
     if (keyboardType === 'email-address') {
-      const validationError = validateEmail(newText);
+      const validationError = await validateEmailAsync(text);
       setErrorText(validationError);
     }
+  };
+
+  const handleTextChange = async (newText: string) => {
+    setText(newText);
     if (onChangeText) {
       onChangeText(newText);
     }
@@ -67,6 +71,7 @@ const InputBox: React.FC<InputBoxProps> = ({
           secureTextEntry={isPassword && !isPasswordVisible}
           style={[styles.input, errorText ? styles.invalidInput : null]}
           onChangeText={handleTextChange}
+          onBlur={handleBlur}
           value={text}
           keyboardType={keyboardType}
         />

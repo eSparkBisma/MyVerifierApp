@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import AppImage from './AppImage';
 import Heading from './Heading';
 import PlainText from './PlainText';
@@ -7,7 +7,7 @@ import SubHeading from './SubHeading';
 import Button from './Button';
 import InputBox from './InputBox';
 import IconButton from './IconButton';
-import {useSession} from './SessionContext';
+// import { Overlay } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginScreenProps {
@@ -17,9 +17,8 @@ interface LoginScreenProps {
 const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
   const [emailaddress, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {isLoggedIn, setLoggedIn} = useSession();
   const [loginError, setLoginError] = useState(false);
-  // const [loginState, setLoginState] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function loadUserData(userData: object) {
     const data = JSON.stringify(userData);
@@ -32,6 +31,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const response = await fetch(
         'https://64e719afb0fd9648b78f596f.mockapi.io/users',
       );
@@ -45,7 +45,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
       if (user) {
         console.log(user);
         console.log('Login successful!');
-        setLoggedIn(true);
         if (onSuccessfulLogin) {
           loadUserData(user);
           onSuccessfulLogin(); // Call the prop function when login is successful
@@ -56,6 +55,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
       }
     } catch (error) {
       console.error('An error occurred during login:', error);
+    } finally {
+      setLoading(false); // Hide loader
     }
   };
 
@@ -108,7 +109,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
           textStyle={{color: '#fff'}}
           onPress={handleLogin}
         />
-
+        {loading && (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#1877F2" />
+          </View>
+        )}
         {loginError && (
           <PlainText
             ptext="Incorrect credentials. Please try again."
@@ -181,6 +186,18 @@ const styles = StyleSheet.create({
     width: '98%',
     alignItems: 'center',
     // backgroundColor: 'pink',
+  },
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 5,
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
