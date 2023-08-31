@@ -7,7 +7,6 @@ import SubHeading from './SubHeading';
 import Button from './Button';
 import InputBox from './InputBox';
 import IconButton from './IconButton';
-// import { Overlay } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginScreenProps {
