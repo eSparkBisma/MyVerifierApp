@@ -30,29 +30,39 @@ const FirstTimeScreen: React.FC<FirstTimeScreenProps> = ({onLoginPress}) => {
             height={50}
           />
           {/* <a href='https://pngtree.com/freepng/warranty-shield-icon-symbol-validation-verified_6085640.html'>png image from pngtree.com/</a> */}
-          <Text style={{fontWeight: '400', fontSize: 25, paddingTop: 7}}>
-            {' '}
+          <Text
+            style={{
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 25,
+              paddingTop: 7,
+              paddingLeft: 5,
+            }}>
             My
           </Text>
-          <Text style={{fontWeight: '800', fontSize: 25, paddingTop: 7}}>
+          <Text
+            style={{
+              fontFamily: 'Montserrat-Bold',
+              fontSize: 25,
+              paddingTop: 7,
+            }}>
             Verifier
           </Text>
         </View>
         <Heading heading="Get ready to have a verification ride" />
         <PlainText
-          ptext="Simply pass your login credentials or sign up to
-            experience a smooth verification and registration process respectively!"
+          ptext="Simply pass your login credentials or sign up to experience a smooth verification and registration process respectively!"
           textStyle={{width: '95%', paddingHorizontal: 14, paddingBottom: 20}}
         />
         <Button
           buttontitle="Login"
           buttonStyle={{backgroundColor: '#1877F2'}}
-          textStyle={{color: '#fff'}}
+          textStyle={{fontFamily: 'Montserrat-Regular', color: '#fff'}}
           onPress={onLoginPress}
         />
         <Button
           buttontitle="Register"
           buttonStyle={{backgroundColor: '#fff', borderWidth: 2, marginTop: 10}}
+          textStyle={{fontFamily: 'Montserrat-Regular'}}
         />
       </View>
     </View>

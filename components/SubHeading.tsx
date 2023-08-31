@@ -12,11 +12,12 @@ const SubHeading: React.FC<SubHeadingText> = ({sub_heading, textStyle}) => {
 
 const styles = StyleSheet.create({
   subheadingstyle: {
+    // fontWeight: 'bold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 20,
-    fontWeight: 'bold',
     width: '95%',
     paddingHorizontal: 12,
-    color: 'black',
+    // color: 'black',
     paddingBottom: 10,
     paddingTop: 12,
     // backgroundColor:"yellow",

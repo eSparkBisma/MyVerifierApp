@@ -4,24 +4,33 @@ import {
   StyleSheet,
   ViewStyle,
   ImageSourcePropType,
-  Image,
 } from 'react-native';
+import FA_icon from 'react-native-vector-icons/FontAwesome';
 import AppImage from './AppImage';
 
 interface IconButtonprops {
+  // source:?
   onPress?: () => void;
-  source: ImageSourcePropType;
+  color?: string;
+  source?: ImageSourcePropType;
+  iconName?: string;
   buttonStyle?: ViewStyle;
 }
 
 const IconButton: React.FC<IconButtonprops> = ({
   onPress,
   source,
+  iconName,
   buttonStyle,
+  color,
 }) => {
   return (
     <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
-      <AppImage source={source} width={30} height={30} />
+      {source ? (
+        <AppImage source={source} width={30} height={30} />
+      ) : (
+        <FA_icon name={iconName} size={30} color={color} />
+      )}
     </TouchableOpacity>
   );
 };

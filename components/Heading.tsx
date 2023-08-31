@@ -11,8 +11,9 @@ const Heading: React.FC<HeadingText> = ({heading}) => {
 
 const styles = StyleSheet.create({
   headingStyle: {
+    fontFamily: 'Montserrat-Bold',
     fontSize: 25,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     width: '95%',
     padding: 12,
     color: 'black',

@@ -64,7 +64,8 @@ const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
               textAlign: 'left',
               color: 'rgba(25, 42, 86, 0.6)',
               fontSize: 18,
-              fontWeight: '500',
+              fontFamily: 'Montserrat-SemiBold',
+              // fontWeight: '500',
             }}
             onPress={onSignout}></Button>
         </View>
@@ -99,8 +100,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   profile: {
+    fontFamily: 'Montserrat-Bold',
     fontSize: 18,
-    fontWeight: '500',
+    // fontWeight: '500',
     paddingHorizontal: 12,
     color: '#fff',
     paddingTop: 40,
@@ -122,12 +124,14 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: 'Montserrat-SemiBold',
+    // fontWeight: '600',
     color: '#192A56',
     paddingTop: 5,
     paddingBottom: 2,
   },
   phone: {
+    fontFamily: 'Montserrat-Regular',
     color: 'grey',
   },
   dashboard: {

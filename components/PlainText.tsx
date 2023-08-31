@@ -12,6 +12,7 @@ const PlainText: React.FC<PlainTextProps> = ({ptext, textStyle}) => {
 
 const styles = StyleSheet.create({
   plainStyle: {
+    fontFamily: 'Montserrat-Light',
     color: 'grey',
     fontSize: 16,
     // backgroundColor: "green",

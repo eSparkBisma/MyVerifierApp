@@ -94,18 +94,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
         <PlainText
           ptext="Forgot Password?"
           textStyle={{
+            fontFamily: 'Montserrat-SemiBold',
             textAlign: 'right',
             width: '95%',
             paddingHorizontal: 14,
             paddingTop: 15,
             paddingBottom: 20,
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
           }}
         />
         <Button
           buttontitle="Login"
           buttonStyle={{backgroundColor: '#1877F2'}}
-          textStyle={{color: '#fff'}}
+          textStyle={{fontFamily: 'Montserrat-SemiBold', color: '#fff'}}
           onPress={handleLogin}
         />
         {loading && (
@@ -127,7 +128,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
         <PlainText
           ptext="Or login with"
           textStyle={{
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Montserrat-SemiBold',
             textAlign: 'center',
             paddingTop: 10,
             paddingBottom: 20,
@@ -139,9 +141,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
             justifyContent: 'space-evenly',
             width: '95%',
           }}>
-          <IconButton source={require('../images/fb-icon.png')} />
+          <IconButton iconName="facebook" color="#1877F2" />
           <IconButton source={require('../images/google-icon.png')} />
-          <IconButton source={require('../images/ios-icon.png')} />
+          <IconButton iconName="twitter" color="#1D9BF0" />
+
+          {/* <IconButton >
+            <Icon name="facebook" size={30} color="#3b5998" />
+          </IconButton>
+
+          <IconButton source={require('../images/google-icon.png')} />
+          <IconButton source={require('../images/ios-icon.png')} /> */}
         </View>
 
         <View
@@ -153,11 +162,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({onSuccessfulLogin}) => {
           }}>
           <PlainText
             ptext="Don't have an account?"
-            textStyle={{fontWeight: 'bold', color: 'black'}}
+            textStyle={{fontFamily: 'Montserrat-SemiBold', color: 'black'}}
           />
           <PlainText
             ptext=" Register"
-            textStyle={{fontWeight: 'bold', color: '#1877F2'}}
+            textStyle={{fontFamily: 'Montserrat-SemiBold', color: '#1877F2'}}
           />
         </View>
       </View>

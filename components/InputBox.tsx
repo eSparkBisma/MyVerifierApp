@@ -69,7 +69,11 @@ const InputBox: React.FC<InputBoxProps> = ({
           placeholder={placeholder}
           placeholderTextColor="#888888"
           secureTextEntry={isPassword && !isPasswordVisible}
-          style={[styles.input, errorText ? styles.invalidInput : null]}
+          style={[
+            styles.input,
+            {fontFamily: 'Montserrat-Regular'},
+            errorText ? styles.invalidInput : null,
+          ]}
           onChangeText={handleTextChange}
           onBlur={handleBlur}
           value={text}
@@ -121,7 +125,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  errorText: {color: 'red', fontSize: 12, marginTop: 4},
+  errorText: {
+    fontFamily: 'Montserrat-Regular',
+    color: 'red',
+    fontSize: 12,
+    marginTop: 4,
+  },
 });
 
 export default InputBox;
