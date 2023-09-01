@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FA_icon from 'react-native-vector-icons/FontAwesome';
 import React, {useState} from 'react';
 import {
   TextInput,
@@ -86,13 +87,11 @@ const InputBox: React.FC<InputBoxProps> = ({
         <TouchableOpacity
           onPress={handlePasswordVisibility}
           style={styles.eyeButton}>
-          <Image
-            source={
-              isPasswordVisible
-                ? require('../images/visible.png')
-                : require('../images/hide.png')
-            }
-            style={styles.eyeIcon}
+          <FA_icon
+            name={isPasswordVisible ? 'eye' : 'eye-slash'}
+            size={20}
+            color={'grey'}
+            style={{paddingTop: 2}}
           />
         </TouchableOpacity>
       )}

@@ -13,7 +13,7 @@ const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
   const [userData, setUserData] = useState<{
     avatar: string;
     name: string;
-    id: string;
+    emailaddress: string;
   } | null>(null);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
             />
           )}
           <Text style={styles.name}>{userData?.name}</Text>
-          <Text style={styles.phone}>{userData?.id}</Text>
+          <Text style={styles.phone}>{userData?.emailaddress}</Text>
         </View>
         <View style={styles.dashboard}>
           <SubHeading
@@ -69,15 +69,6 @@ const Dashboard: React.FC<DashboardProps> = ({onSignout}) => {
             }}
             onPress={onSignout}></Button>
         </View>
-        {/* </> */}
-        {/* // ) : ( */}
-        {/* //   <Button */}
-        {/* //     buttontitle="please Login to continue"
-        //     onPress={onSignout}
-        //     buttonStyle={{backgroundColor: '#1877F2', marginTop: '96%'}}
-        //     textStyle={{color: '#fff'}}
-        //   />
-        // )} */}
       </View>
     </ImageBackground>
   );

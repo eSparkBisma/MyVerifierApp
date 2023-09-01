@@ -20,7 +20,7 @@ interface IconButtonprops {
 const IconButton: React.FC<IconButtonprops> = ({
   onPress,
   source,
-  iconName,
+  iconName = '',
   buttonStyle,
   color,
 }) => {
